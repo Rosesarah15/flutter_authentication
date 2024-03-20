@@ -14,6 +14,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +22,9 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.pink, Colors.blue],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter)),
+        decoration: BoxDecoration(
+          gradient: buildGradient(context),
+        ),
         child: SingleChildScrollView(
             child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -45,21 +44,41 @@ class _SignInScreenState extends State<SignInScreen> {
             const SizedBox(
               height: 20,
             ),
-            signInSignUpButton(context, true, () {
-              FirebaseAuth.instance
-                  .signInWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
-                  .then((value) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
-              }).onError((error, stackTrace) {
-                print("Error ${error.toString()}");
-              });
-            }),
-            SignUpOption(context)
+            _isLoading
+                ? const CircularProgressIndicator()
+                : signInSignUpButton(context, true, () {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text)
+                        .then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()));
+                    }).catchError((error) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (context) => AlertDialog(
+                      //           title: const Text("Error"),
+                      //           content: Text(error.toString()),
+                      //           actions: [
+                      //             TextButton(
+                      //                 onPressed: () {
+                      //                   Navigator.of(context).pop();
+                      //                 },
+                      //                 child: const Text('OK'))
+                      //           ],
+                      //         ));
+                    });
+                  }),
+            signUpOption(context)
           ]),
         )),
       ),
@@ -67,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-Row SignUpOption(BuildContext context) {
+Row signUpOption(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

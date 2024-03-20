@@ -31,11 +31,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.pink, Colors.blue],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter)),
+        decoration: BoxDecoration(
+          // gradient: LinearGradient(
+          //     colors: [Colors.pink, Colors.blue],
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter)
+          gradient: buildGradient(context),
+        ),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -66,13 +68,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
-                    print("Created New Account");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const HomeScreen()));
-                  }).onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
                   });
                 })
               ],

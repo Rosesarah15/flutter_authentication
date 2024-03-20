@@ -56,3 +56,11 @@ Container signInSignUpButton(
     ),
   );
 }
+
+LinearGradient buildGradient(BuildContext context) {
+  return const LinearGradient(
+    colors: [Colors.pink, Colors.blue],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+}
