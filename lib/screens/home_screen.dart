@@ -11,11 +11,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late User _user;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String _userName = '';
+
+  void inputData() {
+    final User? user = auth.currentUser;
+    final name = user?.displayName;
+    setState(() {
+      _userName = name ?? '';
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _user = FirebaseAuth.instance.currentUser!;
+    inputData();
   }
 
   @override
@@ -24,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          'Welcome ${_user.displayName ?? 'User'}',
+          "Welcome ${auth.currentUser?.displayName}",
           style: const TextStyle(
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
         ),
