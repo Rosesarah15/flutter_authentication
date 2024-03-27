@@ -5,7 +5,8 @@ import 'package:flutter_authentication/screens/home_screen.dart';
 import 'package:flutter_authentication/screens/signup_screen.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({Key? key, required this.isDarkMode}) : super(key: key);
+ final bool isDarkMode;
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -84,8 +85,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen()));
+                                        builder: (context) => HomeScreen(
+                                              value,
+                                              userCredential: value,
+                                              isDarkMode: widget.isDarkMode,
+                                            )));
                               }).catchError((error) {
                                 setState(() {
                                   _isLoading = false;
@@ -149,7 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
         GestureDetector(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SignUpScreen()));
+                MaterialPageRoute(builder: (context) =>  SignUpScreen(isDarkMode: widget.isDarkMode,)));
           },
           child: const Text(
             'Sign Up',

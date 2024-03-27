@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_authentication/reusable_widgets/reusable_widgets.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({Key? key, required this.isDarkMode}) : super(key: key);
+  final bool isDarkMode;
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -97,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               email: _emailTextController.text,
                               password: _passwordTextController.text);
 
-                      user.user
+                      await user.user
                           ?.updateDisplayName(_userNameTextController.text);
                     }
                   }),
