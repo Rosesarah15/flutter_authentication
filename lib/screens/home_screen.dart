@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //"Welcome ${userCredential!.user!.email}",
           "Welcome ${userCredential!.user!.displayName}",
           style: const TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Container(

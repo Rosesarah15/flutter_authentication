@@ -6,7 +6,7 @@ import 'package:flutter_authentication/screens/signup_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key, required this.isDarkMode}) : super(key: key);
- final bool isDarkMode;
+  final bool isDarkMode;
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -47,6 +47,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Email is required';
+                      } else if (!_isValidEmail(value)) {
+                        return 'Enter a valid Email';
                       }
                       return null;
                     },
@@ -142,6 +144,10 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  bool _isValidEmail(String value) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+  }
+
   Row signUpOption(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -152,8 +158,12 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>  SignUpScreen(isDarkMode: widget.isDarkMode,)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SignUpScreen(
+                          isDarkMode: widget.isDarkMode,
+                        )));
           },
           child: const Text(
             'Sign Up',
